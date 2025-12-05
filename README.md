@@ -5,7 +5,7 @@ A comprehensive Discord bot with music, AI chat, moderation, and web dashboard.
 ## Features
 
 - Music playback with Lavalink
-- AI-powered chat
+- AI-powered chat (using Google Gemini)
 - Image generation
 - Moderation commands
 - Web UI for management

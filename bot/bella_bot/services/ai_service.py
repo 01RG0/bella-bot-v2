@@ -1,10 +1,14 @@
-import openai
+import google.generativeai as genai
 from ..config import config
 
 class AIService:
     def __init__(self):
-        openai.api_key = config.OPENAI_API_KEY
+        genai.configure(api_key=config.GOOGLE_API_KEY)
+        self.model = genai.GenerativeModel('gemini-pro')
 
     async def generate_response(self, message):
-        # TODO: Implement AI response generation
-        return f"AI response to: {message}"
+        try:
+            response = self.model.generate_content(message)
+            return response.text
+        except Exception as e:
+            return f"Error generating response: {str(e)}"

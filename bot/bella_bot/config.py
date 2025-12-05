@@ -8,7 +8,7 @@ class Config:
     MONGO_URI = os.getenv('MONGO_URI', 'mongodb://localhost:27017')
     LAVALINK_HOST = os.getenv('LAVALINK_HOST', 'localhost')
     LAVALINK_PORT = int(os.getenv('LAVALINK_PORT', 2333))
-    OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+    GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
     # Add other env vars as needed
 
 config = Config()
