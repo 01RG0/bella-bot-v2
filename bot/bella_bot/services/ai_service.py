@@ -1,7 +1,7 @@
 import os
 from google import genai
 from google.genai import types
-from ..config import config
+from bot.bella_bot.config import config
 
 class AIService:
     def __init__(self):
