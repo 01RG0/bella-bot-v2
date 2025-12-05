@@ -14,7 +14,6 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 async def on_ready():
     print(f'Logged in as {bot.user} (ID: {bot.user.id})')
     print('------')
-    ``
     # Load command modules
     try:
         from .commands import ai_chat, mod, music
@@ -43,4 +42,3 @@ async def on_ready():
 
 def main():
     """Main entry point for the bot"""
-    asyncio.run(bot.start(config.DISCORD_TOKEN))
