@@ -24,16 +24,38 @@ if ! command -v docker-compose &> /dev/null; then
     exit 1
 fi
 
-# Build and start services
-echo "🏗️  Building and starting services..."
+# Start local services
+echo "🏗️  Starting local services..."
+
+# Start Redis
+if command -v redis-server &> /dev/null; then
+    echo "Starting Redis..."
+    redis-server --daemonize yes
+else
+    echo "❌ Redis not installed. Please install Redis first."
+    exit 1
+fi
+
+# Start Lavalink
 cd ../infra
-docker-compose up --build -d
+if [ -f "Lavalink.jar" ]; then
+    echo "Starting Lavalink..."
+    java -jar Lavalink.jar &
+else
+    echo "❌ Lavalink.jar not found. Please download it from https://github.com/lavalink-devs/Lavalink/releases"
+    exit 1
+fi
+
+# Start Docker services (Bot, Workers, Web, Mongo)
+echo "Starting Docker services..."
+docker-compose up --build -d bot workers web mongo
 
 echo "✅ Services started successfully!"
 echo ""
 echo "🌐 Web UI: http://localhost:3000"
 echo "📊 MongoDB: localhost:27017"
 echo "🔄 Redis: localhost:6379"
+echo "🎵 Lavalink: localhost:2333"
 echo ""
-echo "To view logs: docker-compose logs -f"
-echo "To stop: docker-compose down"
+echo "To view Docker logs: docker-compose logs -f"
+echo "To stop: docker-compose down && pkill redis-server && pkill java"

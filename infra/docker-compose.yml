@@ -35,5 +35,15 @@ services:
     ports:
       - "6379:6379"
 
+  lavalink:
+    image: fredboat/lavalink:4
+    ports:
+      - "2333:2333"
+    volumes:
+      - ./application.yml:/opt/Lavalink/application.yml
+    environment:
+      - SERVER_PORT=2333
+      - LAVALINK_SERVER_PASSWORD=lavalink-password
+
 volumes:
   mongo_data:
