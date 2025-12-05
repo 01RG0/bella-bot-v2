@@ -27,3 +27,4 @@ A comprehensive Discord bot with music, AI chat, moderation, and web dashboard.
 ## Development
 
 See individual directories for setup instructions.
+.
