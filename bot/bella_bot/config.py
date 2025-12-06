@@ -5,7 +5,8 @@ from pathlib import Path
 # Load .env from project root
 # Calculate path from bot/bella_bot/config.py -> root
 env_path = Path(__file__).parent.parent.parent / '.env'
-load_dotenv(env_path)
+if env_path.exists():
+    load_dotenv(env_path)
 
 class Config:
     DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")

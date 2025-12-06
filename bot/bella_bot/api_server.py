@@ -117,6 +117,56 @@ async def post_event(request: Request):
     return {"status": "ok"}
 
 
+
+
+# Discord Interactions Endpoint for Vercel/Serverless
+from nacl.signing import VerifyKey
+from nacl.exceptions import BadSignatureError
+
+@app.post("/api/interactions")
+async def interactions_endpoint(request: Request):
+    """
+    Handle Discord Interactions (Slash Commands) via HTTP.
+    Required for "Serverless" bot deployment on Vercel.
+    """
+    # 1. Verify Signature
+    signature = request.headers.get("X-Signature-Ed25519")
+    timestamp = request.headers.get("X-Signature-Timestamp")
+    body = await request.body()
+    
+    public_key = os.getenv("DISCORD_PUBLIC_KEY")
+    if not public_key:
+        # If public key is not set, we can't verify, so we can't really work as an interaction endpoint safely.
+        # But we return 401 as per protocol.
+        raise HTTPException(status_code=401, detail="DISCORD_PUBLIC_KEY not configured")
+
+    verify_key = VerifyKey(bytes.fromhex(public_key))
+    
+    try:
+        verify_key.verify(f'{timestamp}{body.decode}'.encode(), bytes.fromhex(signature))
+    except BadSignatureError:
+        raise HTTPException(status_code=401, detail="Invalid request signature")
+
+    # 2. Handle Interaction
+    payload = json.loads(body)
+    
+    # PING (Type 1) must be acknowledged with PONG (Type 1)
+    if payload["type"] == 1:
+        return {"type": 1}
+
+    # APPLICATION_COMMAND (Type 2) and others
+    # TODO: Here you would map payload["data"]["name"] to your command handlers
+    # Ideally, you'd reuse your discord.py logic, but that's hard in stateless HTTP.
+    # For now, we return a simple "I'm running on Vercel!" response for testing.
+    
+    return {
+        "type": 4, # CHANNEL_MESSAGE_WITH_SOURCE
+        "data": {
+            "content": "👋 This command was handled by the Vercel Serverless Endpoint! (Music and heavy tasks require the full bot)"
+        }
+    }
+
+
 @app.get("/api/logs")
 async def get_logs_api(limit: int = 50, level: str = "ALL"):
     """Get system logs"""

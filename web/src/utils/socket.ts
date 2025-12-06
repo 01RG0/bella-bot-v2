@@ -1,5 +1,7 @@
+import { API_BASE_URL } from '../config';
+
 export function createSocket(onMessage: (data: any) => void) {
-  const apiBase = (import.meta.env.VITE_API_BASE_URL as string) ?? 'http://localhost:8000';
+  const apiBase = API_BASE_URL || window.location.origin;
   // convert http(s) -> ws(s)
   const wsBase = apiBase.replace(/^http/, 'ws');
   const wsUrl = wsBase.replace(/\/+$/, '') + '/ws';

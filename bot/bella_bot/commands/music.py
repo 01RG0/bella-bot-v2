@@ -19,9 +19,12 @@ class Music(commands.Cog):
         ]
         # Wavelink 3.x uses Pool.connect
         try:
+           # Attempt connection but don't block/crash if it fails immediately (e.g. invalid host)
+           # The bot should still run without music.
            await wavelink.Pool.connect(nodes=nodes, client=self.bot, cache_capacity=100)
         except Exception as e:
            print(f"Failed to connect to Lavalink: {e}")
+           print("Music commands will not work until Lavalink is available.")
 
     @commands.Cog.listener()
     async def on_wavelink_node_ready(self, payload: wavelink.NodeReadyEventPayload):

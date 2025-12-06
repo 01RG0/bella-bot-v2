@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { RefreshCcw } from "lucide-react";
 import { Button } from "./ui/button";
+import { API_BASE_URL } from '../config';
 
 interface LogEntry {
     _id: string;
@@ -18,9 +19,7 @@ export function LogsPanel() {
     const fetchLogs = async () => {
         setLoading(true);
         try {
-            // @ts-ignore
-            const apiBase = (import.meta as any).env.VITE_API_BASE_URL ?? 'http://localhost:8000';
-            const res = await fetch(`${apiBase}/api/logs?limit=50`);
+            const res = await fetch(`${API_BASE_URL}/api/logs?limit=50`);
             const data = await res.json();
             if (data.logs) {
                 setLogs(data.logs);
