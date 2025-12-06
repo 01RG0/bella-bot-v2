@@ -1,0 +1,12 @@
+node_modules
+bot/__pycache__
+bot/site-packages
+bot/*.egg-info
+.git
+.env
+.DS_Store
+dist
+build
+coverage
+.idea
+.vscode
