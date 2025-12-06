@@ -1,4 +1,6 @@
 import { TrendingUp, TrendingDown, Activity } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { createSocket } from '../utils/socket';
 
 const metrics = [
   {
@@ -49,6 +51,26 @@ const metrics = [
 ];
 
 export function ActivityFeed() {
+  const [events, setEvents] = useState<Array<string>>([]);
+
+  useEffect(() => {
+    const ws = createSocket((data) => {
+      // normalize to a short string for display
+      let text = '';
+      try {
+        if (typeof data === 'string') text = data;
+        else if (data.type) text = `${data.type}: ${JSON.stringify(data.payload ?? data)}`;
+        else text = JSON.stringify(data);
+      } catch {
+        text = String(data);
+      }
+
+      setEvents((prev) => [text, ...prev].slice(0, 10));
+    });
+
+    return () => ws.close();
+  }, []);
+
   return (
     <div className="bg-white rounded-xl border border-neutral-200 p-4 sm:p-6 transition-all hover:shadow-lg h-full flex flex-col">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 gap-3 sm:gap-0">
@@ -59,7 +81,18 @@ export function ActivityFeed() {
           <span>Live</span>
         </div>
       </div>
-      
+
+      {events.length > 0 && (
+        <div className="mb-4">
+          <h3 className="text-sm text-neutral-600 mb-2">Live Events</h3>
+          <div className="space-y-2 max-h-36 overflow-auto">
+            {events.map((e, i) => (
+              <div key={i} className="text-xs text-neutral-700 bg-neutral-50 border border-neutral-100 rounded px-3 py-2">{e}</div>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 flex-1">
         {metrics.map((metric) => {
           const change = metric.current - metric.previous;

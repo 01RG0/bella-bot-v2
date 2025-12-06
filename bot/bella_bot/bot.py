@@ -1,7 +1,7 @@
 import asyncio
 import discord
 from discord.ext import commands
-from bot.bella_bot.config import config
+from .config import config
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -16,10 +16,11 @@ async def on_ready():
     print('------')
     # Load command modules
     try:
-        from .commands import ai_chat, mod, music
+        from .commands import ai_chat, mod, music, image
         await ai_chat.setup(bot)
         await mod.setup(bot)
         await music.setup(bot)
+        await image.setup(bot)
         print('Commands loaded successfully')
     except Exception as e:
         print(f'Error loading commands: {e}')
@@ -42,3 +43,12 @@ async def on_ready():
 
 def main():
     """Main entry point for the bot"""
+    token = config.DISCORD_TOKEN
+    if not token:
+        print('DISCORD_TOKEN not set. Set the environment variable and try again.')
+        return
+
+    try:
+        bot.run(token)
+    except Exception as e:
+        print(f'Error running bot: {e}')

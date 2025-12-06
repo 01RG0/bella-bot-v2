@@ -11,12 +11,21 @@ dependencies = [
     "discord.py>=2.3.0",
     "fastapi>=0.100.0",
     "uvicorn>=0.23.0",
+    "httpx>=0.25.0",
     "pymongo>=4.5.0",
     "pydantic>=2.0.0",
     "python-dotenv>=1.0.0",
     "google-genai>=0.2.0",
+    "python-multipart>=0.0.5",
+    "motor>=3.3.0",
+    "wavelink>=3.0.0",
 ]
 requires-python = ">=3.11"
 
 [project.scripts]
 bella-bot = "bella_bot.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["bella_bot*"]
+exclude = ["bot*"]

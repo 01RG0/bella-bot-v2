@@ -12,7 +12,23 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
     setIsLoading(true);
     // Discord OAuth URL
     const clientId = import.meta.env.VITE_DISCORD_CLIENT_ID;
-    const redirectUri = encodeURIComponent(import.meta.env.VITE_DISCORD_REDIRECT_URI);
+    const rawRedirect = import.meta.env.VITE_DISCORD_REDIRECT_URI;
+
+    if (!clientId) {
+      console.error('Missing VITE_DISCORD_CLIENT_ID environment variable');
+      alert('Discord client ID is not configured. Please check your environment.');
+      setIsLoading(false);
+      return;
+    }
+
+    if (!rawRedirect) {
+      console.error('Missing VITE_DISCORD_REDIRECT_URI environment variable');
+      alert('Discord redirect URI is not configured. Please check your environment.');
+      setIsLoading(false);
+      return;
+    }
+
+    const redirectUri = encodeURIComponent(rawRedirect);
     const scope = encodeURIComponent('identify email');
     const discordAuthUrl = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}`;
     

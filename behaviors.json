@@ -1,0 +1,9 @@
+{
+    "personas": {},
+    "assignments": {
+        "users": {},
+        "roles": {}
+    },
+    "default_persona": "default",
+    "global_guidelines": ""
+}

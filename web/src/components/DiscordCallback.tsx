@@ -33,18 +33,15 @@ export function DiscordCallback({ onLogin }: DiscordCallbackProps) {
       }
 
       try {
-        // Exchange code for access token
-        const tokenResponse = await fetch('https://discord.com/api/oauth2/token', {
+        // Exchange the authorization code via our backend to keep client_secret safe.
+        const apiBase = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000';
+        const tokenResponse = await fetch(`${apiBase}/auth/discord/token`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
           body: new URLSearchParams({
-            client_id: import.meta.env.VITE_DISCORD_CLIENT_ID,
-            client_secret: import.meta.env.VITE_DISCORD_CLIENT_SECRET,
-            grant_type: 'authorization_code',
             code: code,
-            redirect_uri: import.meta.env.VITE_DISCORD_REDIRECT_URI,
           }),
         });
 

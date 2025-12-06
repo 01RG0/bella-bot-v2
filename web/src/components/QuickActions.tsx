@@ -1,6 +1,9 @@
 import { Pause, Play, RotateCcw, Download, UserPlus } from 'lucide-react';
 import { useState } from 'react';
 
+import { ImageGenerator } from './ImageGenerator';
+import { BehaviorSettings } from './BehaviorSettings';
+
 interface QuickActionsProps {
   isActive: boolean;
   setIsActive: (value: boolean) => void;
@@ -41,15 +44,14 @@ export function QuickActions({ isActive, setIsActive, uptimePercentage }: QuickA
 
       <div className="bg-white rounded-xl border border-neutral-200 p-4 sm:p-5 transition-all hover:shadow-lg">
         <h2 className="text-neutral-900 mb-3 sm:mb-4">Quick Actions</h2>
-        
+
         <div className="space-y-2 sm:space-y-3">
           <button
             onClick={() => setIsActive(!isActive)}
-            className={`w-full flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] text-sm sm:text-base ${
-              isActive 
-                ? 'bg-neutral-900 text-white hover:bg-neutral-800' 
+            className={`w-full flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] text-sm sm:text-base ${isActive
+                ? 'bg-neutral-900 text-white hover:bg-neutral-800'
                 : 'bg-green-600 text-white hover:bg-green-700'
-            }`}
+              }`}
           >
             {isActive ? (
               <>
@@ -63,19 +65,22 @@ export function QuickActions({ isActive, setIsActive, uptimePercentage }: QuickA
               </>
             )}
           </button>
-          
+
           <button className="w-full flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-white border border-neutral-200 text-neutral-900 rounded-lg hover:bg-neutral-50 hover:border-neutral-300 transition-all transform hover:scale-[1.02] active:scale-[0.98] text-sm sm:text-base">
             <RotateCcw className="w-4 h-4" />
             <span>Reset Context</span>
           </button>
-          
+
           <button className="w-full flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-white border border-neutral-200 text-neutral-900 rounded-lg hover:bg-neutral-50 hover:border-neutral-300 transition-all transform hover:scale-[1.02] active:scale-[0.98] text-sm sm:text-base">
             <Download className="w-4 h-4" />
             <span>Export Logs</span>
           </button>
+
+          <ImageGenerator />
+          <BehaviorSettings />
         </div>
       </div>
-      
+
       <div className="bg-gradient-to-br from-neutral-50 to-white rounded-xl border border-neutral-200 p-4 sm:p-5 transition-all hover:shadow-lg flex-1">
         <h3 className="text-neutral-900 mb-3 sm:mb-4">System Status</h3>
         <div className="space-y-2 sm:space-y-3">
@@ -83,19 +88,18 @@ export function QuickActions({ isActive, setIsActive, uptimePercentage }: QuickA
             <span className="text-neutral-600 text-xs sm:text-sm">Bot Status</span>
             <div className="flex items-center gap-2">
               <div className={`w-2 h-2 rounded-full ${isActive ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`} />
-              <span className={`text-xs sm:text-sm px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full ${
-                isActive 
-                  ? 'bg-green-50 text-green-700' 
+              <span className={`text-xs sm:text-sm px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full ${isActive
+                  ? 'bg-green-50 text-green-700'
                   : 'bg-red-50 text-red-700'
-              }`}>
+                }`}>
                 {isActive ? 'Active' : 'Paused'}
               </span>
             </div>
           </div>
-          
+
           <div className="flex items-center justify-between p-2.5 sm:p-3 bg-white rounded-lg border border-neutral-100">
             <span className="text-neutral-600 text-xs sm:text-sm">Model</span>
-            <span className="text-neutral-900 text-xs sm:text-sm px-2 sm:px-2.5 py-0.5 sm:py-1 bg-neutral-100 rounded-full">GPT-4</span>
+            <span className="text-neutral-900 text-xs sm:text-sm px-2 sm:px-2.5 py-0.5 sm:py-1 bg-neutral-100 rounded-full">Gemini Flash</span>
           </div>
         </div>
       </div>

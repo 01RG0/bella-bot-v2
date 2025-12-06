@@ -1,0 +1,14 @@
+[phases.setup]
+nixPkgs = ['python311', 'nodejs_20']
+
+[phases.install]
+cmds = [
+    'cd bot && pip install -e .',
+    'cd web && npm install'
+]
+
+[phases.build]
+cmds = ['cd web && npm run build']
+
+[start]
+cmd = 'cd bot && uvicorn bella_bot.api_server:app --host 0.0.0.0 --port $PORT & python -m bella_bot'

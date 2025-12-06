@@ -5,6 +5,7 @@ import { Header } from './components/Header';
 import { StatsCards } from './components/StatsCards';
 import { ActivityFeed } from './components/ActivityFeed';
 import { QuickActions } from './components/QuickActions';
+import { LogsPanel } from './components/LogsPanel';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -38,14 +39,15 @@ export default function App() {
   return (
     <div className="min-h-screen bg-neutral-50">
       <Header user={user} onLogout={handleLogout} />
-      
+
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <div className="space-y-6 sm:space-y-8">
           <StatsCards isActive={isActive} setUptimePercentage={setUptimePercentage} />
-          
+
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 items-start">
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-2 space-y-6">
               <ActivityFeed />
+              <LogsPanel />
             </div>
             <div className="lg:sticky lg:top-6">
               <QuickActions isActive={isActive} setIsActive={setIsActive} uptimePercentage={uptimePercentage} />

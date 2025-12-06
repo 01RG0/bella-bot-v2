@@ -1,24 +1,15 @@
+# Railway.app Deployment Configuration
+
+# This project runs as 3 separate services:
+# 1. Bot (Discord Bot + API Server)
+# 2. Web (Frontend Dashboard)
+# 3. Workers (Background tasks - optional)
+
 [build]
-builder = "dockerfile"
+builder = "nixpacks"
 
 [deploy]
-startCommand = "python -m bella_bot"
-healthcheckPath = "/health"
-healthcheckTimeout = 300
+# Default service is the bot + API
+startCommand = "cd bot && uvicorn bella_bot.api_server:app --host 0.0.0.0 --port $PORT & python -m bella_bot"
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
-
-[[services]]
-id = "bot"
-name = "Bella Bot"
-source = "./bot"
-
-[[services.workers]]
-id = "workers"
-name = "Background Workers"
-source = "./workers"
-
-[[services.web]]
-id = "web"
-name = "Web Dashboard"
-source = "./web"
